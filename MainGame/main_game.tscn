@@ -1,34 +1,38 @@
-[gd_scene load_steps=5 format=3 uid="uid://86xt68bdifyu"]
+[gd_scene load_steps=6 format=3 uid="uid://86xt68bdifyu"]
 
+[ext_resource type="Script" path="res://MainGame/scripts/Ground.gd" id="1_b3qrn"]
 [ext_resource type="Script" path="res://MainGame/scripts/Ball.gd" id="1_b7qy7"]
 [ext_resource type="Script" path="res://MainGame/scripts/main_game.gd" id="1_nx0wg"]
 [ext_resource type="Script" path="res://MainGame/scripts/Button.gd" id="2_4forr"]
 [ext_resource type="Script" path="res://MainGame/scripts/Camera2D.gd" id="2_ltgkg"]
 
 [node name="MainGame" type="Node2D"]
+position = Vector2(1280, 720)
 script = ExtResource("1_nx0wg")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1284, 722)
-script = ExtResource("2_ltgkg")
-
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(1336, 813)
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Ground"]
-position = Vector2(-1348, -687)
-polygon = PackedVector2Array(-81, 1000, 2881, 984, 4845, 1012, 4851, 1568, -79, 1609)
-
-[node name="Polygon2D" type="Polygon2D" parent="Ground"]
-color = Color(1.01075e-06, 0.742912, 0.409696, 1)
-polygon = PackedVector2Array(-1437, 311, 1965, 293, 3505, 321, 3507, 895, -1441, 928)
+script = ExtResource("1_b3qrn")
 
 [node name="Ball" type="RigidBody2D" parent="."]
-position = Vector2(239, 227)
+position = Vector2(-1048, -514)
+mass = 0.04
 script = ExtResource("1_b7qy7")
 ball_radius = 10.0
 
-[node name="Button" type="Button" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 1.0
+script = ExtResource("2_ltgkg")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="HUD"]
+offset_left = 382.0
+offset_top = 1334.0
+offset_right = 422.0
+offset_bottom = 1357.0
+
+[node name="Button" type="Button" parent="HUD"]
 offset_left = 36.0
 offset_top = 1262.0
 offset_right = 337.0
@@ -36,8 +40,16 @@ offset_bottom = 1375.0
 text = "Swing"
 script = ExtResource("2_4forr")
 
-[node name="Label" type="Label" parent="."]
-offset_left = 382.0
-offset_top = 1334.0
-offset_right = 422.0
-offset_bottom = 1357.0
+[node name="Angle" type="TextEdit" parent="HUD"]
+offset_left = 763.0
+offset_top = 1264.0
+offset_right = 1012.0
+offset_bottom = 1305.0
+text = "45"
+
+[node name="Power" type="TextEdit" parent="HUD"]
+offset_left = 761.0
+offset_top = 1321.0
+offset_right = 1010.0
+offset_bottom = 1362.0
+text = "10"
