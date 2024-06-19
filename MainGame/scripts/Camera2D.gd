@@ -1,5 +1,6 @@
 extends Camera2D
 
+const mousescrollspeed = 25
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.limit_left = 0
@@ -12,8 +13,12 @@ func _process(delta):
 	if (get_parent().get_node("Ball").freeze == false):
 		self.position.x = get_parent().get_node("Ball").position.x
 	else:
+		# This mouse scrolling really doesn't work well....consider revisiting
 		var mousex = get_viewport().get_mouse_position().x
 		var leftscrollarea = get_viewport().size.x * 0.05
 		var rightscrollarea = get_viewport().size.x * 0.95
-		if ((mousex < leftscrollarea) or (mousex > rightscrollarea)):
-			self.position.x = get_viewport().get_mouse_position().x	
+		if (mousex < leftscrollarea):
+			self.position.x = self.position.x - mousescrollspeed
+			
+		if (mousex > rightscrollarea):
+			self.position.x = self.position.x + mousescrollspeed
