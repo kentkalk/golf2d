@@ -1,10 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://86xt68bdifyu"]
+[gd_scene load_steps=7 format=3 uid="uid://86xt68bdifyu"]
 
 [ext_resource type="Script" path="res://MainGame/scripts/Ground.gd" id="1_b3qrn"]
 [ext_resource type="Script" path="res://MainGame/scripts/Ball.gd" id="1_b7qy7"]
 [ext_resource type="Script" path="res://MainGame/scripts/main_game.gd" id="1_nx0wg"]
 [ext_resource type="Script" path="res://MainGame/scripts/Button.gd" id="2_4forr"]
 [ext_resource type="Script" path="res://MainGame/scripts/Camera2D.gd" id="2_ltgkg"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tqmda"]
+friction = 2.0
+rough = true
+bounce = 0.45
 
 [node name="MainGame" type="Node2D"]
 position = Vector2(1280, 720)
@@ -16,6 +21,9 @@ script = ExtResource("1_b3qrn")
 [node name="Ball" type="RigidBody2D" parent="."]
 position = Vector2(-1048, -514)
 mass = 0.04
+physics_material_override = SubResource("PhysicsMaterial_tqmda")
+gravity_scale = 0.9
+freeze_mode = 1
 script = ExtResource("1_b7qy7")
 ball_radius = 10.0
 
@@ -52,4 +60,4 @@ offset_left = 761.0
 offset_top = 1321.0
 offset_right = 1010.0
 offset_bottom = 1362.0
-text = "10"
+text = "75"
