@@ -14,10 +14,11 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	pass
 	
 	# Freezes ball if it moves too slow, play was continuing forever otherwise
-	if self.linear_velocity.length() < 25:
-		self.freeze = true
+	#if self.linear_velocity.length() < 25:
+	#	self.freeze = true
 
 func _draw():
 	draw_circle(Vector2(0,0),ball_radius,Color.WHITE)
