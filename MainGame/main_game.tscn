@@ -1,10 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://86xt68bdifyu"]
+[gd_scene load_steps=14 format=3 uid="uid://86xt68bdifyu"]
 
-[ext_resource type="Script" path="res://MainGame/scripts/Ground.gd" id="1_b3qrn"]
-[ext_resource type="Script" path="res://MainGame/scripts/Ball.gd" id="1_b7qy7"]
-[ext_resource type="Script" path="res://MainGame/scripts/main_game.gd" id="1_nx0wg"]
-[ext_resource type="Script" path="res://MainGame/scripts/Button.gd" id="2_4forr"]
-[ext_resource type="Script" path="res://MainGame/scripts/Camera2D.gd" id="2_ltgkg"]
+[ext_resource type="Script" path="res://maingame/scripts/main_game.gd" id="1_knt53"]
+[ext_resource type="Script" path="res://maingame/scripts/Ball.gd" id="2_evyrh"]
+[ext_resource type="Material" uid="uid://bjdkpmapnsmew" path="res://maingame/materials/fairway_grass.tres" id="3_0mred"]
+[ext_resource type="Script" path="res://maingame/scripts/ground.gd" id="3_l0m4m"]
+[ext_resource type="Script" path="res://maingame/scripts/Camera2D.gd" id="3_t70pr"]
+[ext_resource type="Material" uid="uid://ct4r3ksogah26" path="res://maingame/materials/teebox_grass.tres" id="4_6fvap"]
+[ext_resource type="Script" path="res://maingame/scripts/Button.gd" id="4_wvr71"]
+[ext_resource type="Material" uid="uid://5x6qpawqpfy5" path="res://maingame/materials/green_grass.tres" id="5_5soj8"]
+[ext_resource type="Texture2D" uid="uid://lsdedqgs3f8v" path="res://maingame/textures/sprites/tee.svg" id="8_ai55v"]
+[ext_resource type="Script" path="res://maingame/scripts/ingamemenu.gd" id="10_rnssa"]
+
+[sub_resource type="Gradient" id="Gradient_7xp6g"]
+colors = PackedColorArray(0, 0.596078, 0.980392, 0.792157, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f5i2j"]
+gradient = SubResource("Gradient_7xp6g")
+width = 500
+height = 1000
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tqmda"]
 friction = 2.0
@@ -13,24 +28,61 @@ bounce = 0.45
 
 [node name="MainGame" type="Node2D"]
 position = Vector2(1280, 720)
-script = ExtResource("1_nx0wg")
+script = ExtResource("1_knt53")
 
-[node name="Ground" type="StaticBody2D" parent="."]
-script = ExtResource("1_b3qrn")
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(0, 717)
+texture = SubResource("GradientTexture2D_f5i2j")
+region_enabled = true
+region_rect = Rect2(0, 0, 30720, 1440)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 1.0
+script = ExtResource("3_t70pr")
+
+[node name="Ground" type="Node2D" parent="."]
+script = ExtResource("3_l0m4m")
+
+[node name="Fairway" type="StaticBody2D" parent="Ground"]
+material = ExtResource("3_0mred")
+
+[node name="Teebox" type="StaticBody2D" parent="Ground"]
+material = ExtResource("4_6fvap")
+
+[node name="Water" type="StaticBody2D" parent="Ground"]
+
+[node name="Green" type="StaticBody2D" parent="Ground"]
+material = ExtResource("5_5soj8")
 
 [node name="Ball" type="RigidBody2D" parent="."]
+z_index = 2
 position = Vector2(-1048, -514)
 mass = 0.04
 physics_material_override = SubResource("PhysicsMaterial_tqmda")
 gravity_scale = 0.9
 freeze_mode = 1
-script = ExtResource("1_b7qy7")
+continuous_cd = 1
+script = ExtResource("2_evyrh")
 ball_radius = 10.0
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position_smoothing_enabled = true
-position_smoothing_speed = 1.0
-script = ExtResource("2_ltgkg")
+[node name="Clutter" type="StaticBody2D" parent="."]
+
+[node name="Tee" type="CollisionPolygon2D" parent="Clutter"]
+visible = false
+position = Vector2(-739, 359)
+scale = Vector2(0.25, 0.25)
+polygon = PackedVector2Array(22.5, -94, 20.3, -85, 19.2, -85, 12.5, -66, 12.5, 37, 11.5, 91, 10.3, 91, 4.2, 110, -4.5, 110, -4.5, 107, -12.5, 85.2, -12.5, -59, -13.4, -59, -14.4, -72, -15.3, -72, -18.3, -84, -19.2, -84, -22.5, -92.3, -22.5, -110, 22.5, -110)
+disabled = true
+
+[node name="Sprite" type="Sprite2D" parent="Clutter/Tee"]
+z_index = -1
+texture = ExtResource("8_ai55v")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -46,7 +98,7 @@ offset_top = 1262.0
 offset_right = 337.0
 offset_bottom = 1375.0
 text = "Swing"
-script = ExtResource("2_4forr")
+script = ExtResource("4_wvr71")
 
 [node name="Angle" type="TextEdit" parent="HUD"]
 offset_left = 763.0
@@ -61,3 +113,22 @@ offset_top = 1321.0
 offset_right = 1010.0
 offset_bottom = 1362.0
 text = "75"
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+visible = false
+script = ExtResource("10_rnssa")
+
+[node name="ResumeButton" type="Button" parent="InGameMenu"]
+offset_left = 1093.0
+offset_top = 531.0
+offset_right = 1461.0
+offset_bottom = 670.0
+text = "Resume Game"
+
+[node name="ExitButton" type="Button" parent="InGameMenu"]
+offset_left = 1090.0
+offset_top = 716.0
+offset_right = 1458.0
+offset_bottom = 855.0
+text = "Exit Game"

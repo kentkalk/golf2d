@@ -10,8 +10,6 @@ func _ready():
 	collshape.shape = collcircle
 	add_child(collshape)
 	
-	position = get_parent().get_node("Ground").teebox_start_pos
-	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass

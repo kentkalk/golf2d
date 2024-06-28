@@ -4,7 +4,10 @@ const mousescrollspeed = 25
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.limit_left = 0
-	self.limit_right = get_parent().get_node("Ground").level_width
+	var levelfirstline = GameManager.currentlevel.front().line
+	var levellastline = GameManager.currentlevel.back().line
+	if levellastline.size() > 0:
+		self.limit_right = levellastline[levellastline.size() - 1].x + abs(levelfirstline[0].x)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

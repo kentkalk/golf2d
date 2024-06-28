@@ -13,5 +13,5 @@ func _process(delta):
 func _button_pressed():
 	var shotangle = deg_to_rad(float(get_parent().get_node("Angle").text))
 	var shotpower = float(get_parent().get_node("Power").text)
-	get_tree().get_root().get_node("MainGame/Ball").strike(shotangle,shotpower)
+	get_tree().get_root().get_node("Golf2D/MainGame/Ball").strike(shotangle,shotpower)
 	

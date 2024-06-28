@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b7mpl1qe7w6pj"]
+
+[ext_resource type="Shader" path="res://maingame/shaders/water.gdshader" id="1_opist"]
+
+[resource]
+shader = ExtResource("1_opist")

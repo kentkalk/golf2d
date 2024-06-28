@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://diveg2che5pgq"]
+
+[ext_resource type="Script" path="res://scripts/debughud.gd" id="1_ma0ii"]
+
+[node name="Golf2D" type="Node"]
+
+[node name="DebugHUD" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("1_ma0ii")
+
+[node name="RenderStats" type="Label" parent="DebugHUD"]
+offset_left = 2200.0
+offset_top = 15.0
+offset_right = 2240.0
+offset_bottom = 38.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="BallStats" type="Label" parent="DebugHUD"]
+offset_left = 2200.0
+offset_top = 64.0
+offset_right = 2240.0
+offset_bottom = 87.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
