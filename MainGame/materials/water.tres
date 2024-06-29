@@ -4,3 +4,4 @@
 
 [resource]
 shader = ExtResource("1_opist")
+shader_parameter/shader_color = null

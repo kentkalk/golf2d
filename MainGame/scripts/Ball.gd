@@ -1,25 +1,12 @@
 extends RigidBody2D
 
-@export var ball_radius: float = 0.0
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	var collcircle = CircleShape2D.new()
-	collcircle.radius = ball_radius
-	var collshape = CollisionShape2D.new()
-	collshape.shape = collcircle
-	add_child(collshape)
+	# Position the ball on the tee
+	position = GameManager.currentlevel.ballstartposition
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-	
-	# Freezes ball if it moves too slow, play was continuing forever otherwise
-	#if self.linear_velocity.length() < 25:
-	#	self.freeze = true
-
 func _draw():
-	draw_circle(Vector2(0,0),ball_radius,Color.WHITE)
+	var ballradius = get_node("CollisionShape2D").shape.radius
+	draw_circle(Vector2(0,0),ballradius,Color.WHITE)
 	
 # Called by user interface to strike the ball
 func strike(angle: float, power: float):

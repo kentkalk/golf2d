@@ -1,13 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://86xt68bdifyu"]
+[gd_scene load_steps=13 format=3 uid="uid://86xt68bdifyu"]
 
 [ext_resource type="Script" path="res://maingame/scripts/main_game.gd" id="1_knt53"]
-[ext_resource type="Script" path="res://maingame/scripts/Ball.gd" id="2_evyrh"]
 [ext_resource type="Material" uid="uid://bjdkpmapnsmew" path="res://maingame/materials/fairway_grass.tres" id="3_0mred"]
-[ext_resource type="Script" path="res://maingame/scripts/ground.gd" id="3_l0m4m"]
-[ext_resource type="Script" path="res://maingame/scripts/Camera2D.gd" id="3_t70pr"]
 [ext_resource type="Material" uid="uid://ct4r3ksogah26" path="res://maingame/materials/teebox_grass.tres" id="4_6fvap"]
 [ext_resource type="Script" path="res://maingame/scripts/Button.gd" id="4_wvr71"]
 [ext_resource type="Material" uid="uid://5x6qpawqpfy5" path="res://maingame/materials/green_grass.tres" id="5_5soj8"]
+[ext_resource type="Script" path="res://maingame/scripts/ball.gd" id="6_2eyps"]
 [ext_resource type="Texture2D" uid="uid://lsdedqgs3f8v" path="res://maingame/textures/sprites/tee.svg" id="8_ai55v"]
 [ext_resource type="Script" path="res://maingame/scripts/ingamemenu.gd" id="10_rnssa"]
 
@@ -25,6 +23,8 @@ fill_to = Vector2(0, 0)
 friction = 2.0
 rough = true
 bounce = 0.45
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ikxa8"]
 
 [node name="MainGame" type="Node2D"]
 position = Vector2(1280, 720)
@@ -44,10 +44,8 @@ region_rect = Rect2(0, 0, 30720, 1440)
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
 position_smoothing_speed = 1.0
-script = ExtResource("3_t70pr")
 
 [node name="Ground" type="Node2D" parent="."]
-script = ExtResource("3_l0m4m")
 
 [node name="Fairway" type="StaticBody2D" parent="Ground"]
 material = ExtResource("3_0mred")
@@ -68,8 +66,10 @@ physics_material_override = SubResource("PhysicsMaterial_tqmda")
 gravity_scale = 0.9
 freeze_mode = 1
 continuous_cd = 1
-script = ExtResource("2_evyrh")
-ball_radius = 10.0
+script = ExtResource("6_2eyps")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("CircleShape2D_ikxa8")
 
 [node name="Clutter" type="StaticBody2D" parent="."]
 
