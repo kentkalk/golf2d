@@ -5,11 +5,11 @@ var _new_position : Vector2 = Vector2.ZERO
 
 func _ready():
 	# Position the ball on the tee
-	reposition_ball(GameManager.currentlevel.get_ballstartposition())
+	reposition_ball(GameManager.current_level.get_ballstartposition())
 	
 func _draw():
-	var ballradius = get_node("CollisionShape2D").shape.radius
-	draw_circle(Vector2(0,0),ballradius,Color.WHITE)
+	get_node("CollisionShape2D").shape.radius = GameManager.ball_radius
+	draw_circle(Vector2(0,0), GameManager.ball_radius ,Color.WHITE)
 	
 func _integrate_forces(state):
 	if _is_repositioning:
@@ -27,7 +27,7 @@ func strike(angle: float, power: float):
 	shotvector.y = -(power * sin(deg_to_rad(angle)))
 	apply_central_impulse(shotvector)
 
-# Called to reposition ball, this also removes all impulses
+# Called to reposition ball, this also removes all external forces
 func reposition_ball(in_position : Vector2):
 	sleeping = false
 	_new_position = in_position

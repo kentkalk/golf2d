@@ -4,48 +4,48 @@
 
 extends Node
 
+enum HazardType {FAIRWAY, TEEBOX, GREEN, WATER}
+
 # LEVEL GENERATION CONFIGURATION CONSTANTS
 #-----------------------------------------
 # General
 const xcoord_start = -1280
-const ycoord_lbound = 0
-const ycoord_ubound = 500
+const ycoord_mean = 400
+const ycoord_stddev = 100
 
-# Teebox config
-const teebox_leadin_width = 512.0
-const teebox_width = 643.0
-const teebox_leadout_width = 128.0
-const teebox_yoffset = 10.0
+# Level layout
+const hazard_chance = 0.25
 
 # Fairway config
 const fairway_width = 1280.0
 const fairway_sections = 16
-const fairway_roughness = 5.0
+const fairway_roughness = 10.0
+
+# Teebox config
+# this is a fixed width by design, if changed here the element scene needs to be changed as well
+const teebox_width = 1280
 
 # Green config
-const green_leadin_width = 128.0
-const green_width_lbound = 700.0
-const green_width_ubound = 1900.0
-const green_leadout_width = 480.0
-const green_section_width = 240.0
-const green_roughness = 2
-const green_yoffset = 5.0
+const green_mean_width = 1300
+const green_stddev = 300
+const green_roughness = 8.0
 
 # Water config
-const water_width = 1120.0
-const water_yoffset = 0.0
+# most of the water element design is done in the scene, but width of the water hazard is randomly assigned
+const water_mean_width = 1280
+const water_stddev = 200
 #-----------------------------------------
 
-enum HazardType {FAIRWAY, TEEBOX, GREEN, WATER}
 
-# class contains all information needed on a single generated level
+
+# Level class contains all information needed to draw a level
 class level:
 	var _ballstartposition : Vector2
+	var _holestartposition : Vector2
 	var _par : int
 	var _width : int
 	var sections : Array[_section]
 	var clutter : Array[_clutterparams]
-	var _previoustype : HazardType
 	
 	class _section:
 		var type : HazardType
@@ -61,7 +61,6 @@ class level:
 		newsection.type = in_type
 		newsection.line = in_line
 		sections.append(newsection)
-		_previoustype = in_type
 	
 	func _add_clutter(in_resource : String, in_position : Vector2, in_collides : bool = true):
 		var newclutter = _clutterparams.new()
@@ -76,15 +75,28 @@ class level:
 	func get_width():
 		return _width
 		
-	func generate():
-		# random par
-		_par = randi_range(3,5)
+	func generate(in_par : int):
+		_par = in_par
 		
-		# hole layout
-		var holelayout = [HazardType.TEEBOX, HazardType.FAIRWAY, HazardType.WATER, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.WATER, HazardType.GREEN]
+		# number of sections and hazards per hole
+		var sections = 2 * _par
+		var hazardbudget = round(sections / 3)
+		sections -= 2  # every hole has a teebox and a green
 		
+		var holelayout = [HazardType.TEEBOX]	# every hole starts with a teebox
+		
+		# add hazards if chance met
+		for i in range(sections):
+			if hazardbudget > 0 and randf() <= hazard_chance:
+				holelayout.append(HazardType.WATER)
+				hazardbudget -= 1
+			else:
+				holelayout.append(HazardType.FAIRWAY)
+		
+		holelayout.append(HazardType.GREEN)     # every hole ends with a green
+
 		#set starting location
-		var nextlocation = Vector2(xcoord_start,randf_range(ycoord_lbound, ycoord_ubound))  #Set starting location		
+		var nextlocation = Vector2(xcoord_start,randfn(ycoord_mean, ycoord_stddev))  #Set starting location		
 		# Start calculating level width
 		_width = abs(nextlocation.x)
 	
@@ -97,8 +109,7 @@ class level:
 					var piecewidth = fairway_width / fairway_sections
 					currentline = PackedVector2Array()
 					currentline.append(nextlocation)  #start location
-					if _previoustype != HazardType.WATER:
-						nextlocation.y = randf_range(ycoord_lbound, ycoord_ubound)
+					nextlocation.y = randfn(ycoord_mean, ycoord_stddev)
 					
 					#randomized pieces
 					for i in range(fairway_sections):
@@ -109,16 +120,8 @@ class level:
 					_add_section(HazardType.FAIRWAY, currentline)	
 					
 				HazardType.TEEBOX:
-					### Fairway section as lead-in
-					#currentline = PackedVector2Array()
-					#currentline.append(nextlocation)
-					#nextlocation.x += teebox_leadin_width
-					#currentline.append(nextlocation)
-					#_add_section(HazardType.FAIRWAY, currentline)
-					
 					# Teebox section
 					currentline = PackedVector2Array()
-					nextlocation.y += teebox_yoffset
 					currentline.append(nextlocation)
 					nextlocation.x += teebox_width
 					currentline.append(nextlocation)
@@ -130,32 +133,14 @@ class level:
 					# Clutter
 					var teeposition = Vector2(nextlocation.x - (teebox_width / 2), nextlocation.y - 10)
 					_add_clutter("tee.tscn", teeposition)
-
-					nextlocation.y -= teebox_yoffset  # undo the offset of y for next section
-					
-					## Fairway section as lead-out
-					#currentline = PackedVector2Array()
-					#currentline.append(nextlocation)
-					#nextlocation.x += teebox_leadout_width
-					#currentline.append(nextlocation)
-					#_add_section(HazardType.FAIRWAY, currentline)
 					
 				HazardType.GREEN:
-					# Fairway section as lead-in
-					currentline = PackedVector2Array()
-					currentline.append(nextlocation)
-					nextlocation.x += green_leadin_width
-					if _previoustype != HazardType.WATER:
-						nextlocation.y = randf_range(ycoord_lbound, ycoord_ubound)
-					currentline.append(nextlocation)
-					_add_section(HazardType.FAIRWAY, currentline)
-					
 					# Green section
 					currentline = PackedVector2Array()
-					nextlocation.y += green_yoffset
 					currentline.append(nextlocation)
 					
-					var green_width = randf_range(green_width_lbound, green_width_ubound)
+					var green_width = randfn(green_mean_width, green_stddev)
+					var green_section_width = (green_width / (2 * green_roughness * randf()))
 					var green_sections = int(green_width / green_section_width)
 					var piecewidth = green_width / green_sections
 					
@@ -166,23 +151,14 @@ class level:
 						currentline.append(nextlocation)
 						
 					_add_section(HazardType.GREEN, currentline)
-					nextlocation.y -= green_yoffset
-					
-					# Fairway section as lead-out
-					currentline = PackedVector2Array()
-					currentline.append(nextlocation)
-					nextlocation.x += green_leadout_width
-					currentline.append(nextlocation)
-					_add_section(HazardType.FAIRWAY, currentline)
+
 					
 				HazardType.WATER:
 					currentline = PackedVector2Array()
-					nextlocation.y += water_yoffset
 					currentline.append(nextlocation)
-					nextlocation.x += water_width
+					nextlocation.x += randfn(water_mean_width, water_stddev)
 					currentline.append(nextlocation)
 					_add_section(HazardType.WATER, currentline)
-					nextlocation.y -= water_yoffset
 		
 		# Finish calculating level width from final x coordinate
 		_width += nextlocation.x

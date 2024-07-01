@@ -21,9 +21,9 @@ metadata/_edit_lock_ = true
 [node name="WaterTexture" type="TextureRect" parent="."]
 texture_repeat = 2
 material = ExtResource("2_x4wme")
-offset_top = 30.0
+offset_top = 15.0
 offset_right = 1120.0
-offset_bottom = 330.0
+offset_bottom = 315.0
 texture = SubResource("NoiseTexture2D_fiojs")
 expand_mode = 1
 stretch_mode = 1

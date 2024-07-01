@@ -17,8 +17,8 @@ func _ready():
 	add_child(level_canvas)
 	add_child(clutter_container)
 	
-	draw_level(GameManager.currentlevel.sections)
-	add_clutter(GameManager.currentlevel.clutter)
+	draw_level(GameManager.current_level.sections)
+	add_clutter(GameManager.current_level.clutter)
 
 
 # Called to draw the actual lines and polygons of the level

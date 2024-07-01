@@ -14,7 +14,7 @@ func _ready():
 	translate(left_coord)
 	
 	# draw leading curve
-	var leadingpoints = CustomUtils.line_to_curve(Vector2.ZERO, Vector2(150,0), Vector2(200, height), Vector2.ZERO)
+	var leadingpoints = CustomUtils.line_to_curve(Vector2.ZERO, Vector2(150,0), Vector2(200, height), Vector2(-75,0))
 	var leadline = Line2D.new()
 	leadline.points = leadingpoints
 	leadline.default_color = Color.ROSY_BROWN
@@ -30,7 +30,7 @@ func _ready():
 	
 	
 	# draw trailing curve
-	var trailingpoints =  CustomUtils.line_to_curve(Vector2(width, 0), Vector2(-150, 0), Vector2(width-200, height), Vector2.ZERO)
+	var trailingpoints =  CustomUtils.line_to_curve(Vector2(width, 0), Vector2(-150, 0), Vector2(width-200, height), Vector2(75,0))
 	var trailline = Line2D.new()
 	trailline.points = trailingpoints
 	trailline.default_color = Color.ROSY_BROWN

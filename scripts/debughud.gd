@@ -6,7 +6,7 @@ func _ready():
 	get_node("SwingOverride/ResetButton").pressed.connect(_reset_pressed)
 	
 	# Show Debug HUD 
-	if GameManager.debugmode:
+	if GameManager.debug_mode:
 		show()
 	else:
 		self.process_mode = Node.PROCESS_MODE_DISABLED
