@@ -1,6 +1,6 @@
 # 2D Golf Level Generator
 # =======================
-# Procedurally level generator
+# Procedural level generator
 
 extends Node
 
@@ -15,7 +15,7 @@ const ycoord_ubound = 500
 const teebox_leadin_width = 512.0
 const teebox_width = 643.0
 const teebox_leadout_width = 128.0
-const teebox_yoffset = 5.0
+const teebox_yoffset = 10.0
 
 # Fairway config
 const fairway_width = 1280.0
@@ -33,16 +33,16 @@ const green_yoffset = 5.0
 
 # Water config
 const water_width = 1120.0
-const water_yoffset = 30.0
+const water_yoffset = 0.0
 #-----------------------------------------
 
 enum HazardType {FAIRWAY, TEEBOX, GREEN, WATER}
 
 # class contains all information needed on a single generated level
 class level:
-	var ballstartposition : Vector2
-	var par : int
-	var width : int
+	var _ballstartposition : Vector2
+	var _par : int
+	var _width : int
 	var sections : Array[_section]
 	var clutter : Array[_clutterparams]
 	var _previoustype : HazardType
@@ -70,17 +70,23 @@ class level:
 		newclutter.collides = in_collides
 		clutter.append(newclutter)
 		
+	func get_ballstartposition():
+		return _ballstartposition
+		
+	func get_width():
+		return _width
+		
 	func generate():
 		# random par
-		par = randi_range(3,5)
+		_par = randi_range(3,5)
 		
 		# hole layout
-		var holelayout = [HazardType.TEEBOX, HazardType.FAIRWAY, HazardType.WATER, HazardType.FAIRWAY, HazardType.GREEN]
+		var holelayout = [HazardType.TEEBOX, HazardType.FAIRWAY, HazardType.WATER, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.FAIRWAY, HazardType.WATER, HazardType.GREEN]
 		
 		#set starting location
 		var nextlocation = Vector2(xcoord_start,randf_range(ycoord_lbound, ycoord_ubound))  #Set starting location		
 		# Start calculating level width
-		width = abs(nextlocation.x)
+		_width = abs(nextlocation.x)
 	
 		# Generate actual level elements in this loop
 		for currenthazard in holelayout:
@@ -103,12 +109,12 @@ class level:
 					_add_section(HazardType.FAIRWAY, currentline)	
 					
 				HazardType.TEEBOX:
-					## Fairway section as lead-in
-					currentline = PackedVector2Array()
-					currentline.append(nextlocation)
-					nextlocation.x += teebox_leadin_width
-					currentline.append(nextlocation)
-					_add_section(HazardType.FAIRWAY, currentline)
+					### Fairway section as lead-in
+					#currentline = PackedVector2Array()
+					#currentline.append(nextlocation)
+					#nextlocation.x += teebox_leadin_width
+					#currentline.append(nextlocation)
+					#_add_section(HazardType.FAIRWAY, currentline)
 					
 					# Teebox section
 					currentline = PackedVector2Array()
@@ -119,20 +125,20 @@ class level:
 					_add_section(HazardType.TEEBOX, currentline)
 					
 					# Ball starting position
-					ballstartposition = Vector2(nextlocation.x - (teebox_width / 2), nextlocation.y - 50)
+					_ballstartposition = Vector2(nextlocation.x - (teebox_width / 2), nextlocation.y - 50)
 					
 					# Clutter
 					var teeposition = Vector2(nextlocation.x - (teebox_width / 2), nextlocation.y - 10)
-					_add_clutter("Clutter/Tee", teeposition)
+					_add_clutter("tee.tscn", teeposition)
 
 					nextlocation.y -= teebox_yoffset  # undo the offset of y for next section
 					
-					# Fairway section as lead-out
-					currentline = PackedVector2Array()
-					currentline.append(nextlocation)
-					nextlocation.x += teebox_leadout_width
-					currentline.append(nextlocation)
-					_add_section(HazardType.FAIRWAY, currentline)
+					## Fairway section as lead-out
+					#currentline = PackedVector2Array()
+					#currentline.append(nextlocation)
+					#nextlocation.x += teebox_leadout_width
+					#currentline.append(nextlocation)
+					#_add_section(HazardType.FAIRWAY, currentline)
 					
 				HazardType.GREEN:
 					# Fairway section as lead-in
@@ -178,5 +184,5 @@ class level:
 					_add_section(HazardType.WATER, currentline)
 					nextlocation.y -= water_yoffset
 		
-		# Finish calculating level width from final x ccordinate
-		width += nextlocation.x
+		# Finish calculating level width from final x coordinate
+		_width += nextlocation.x

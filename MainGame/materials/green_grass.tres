@@ -1,7 +1,0 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://5x6qpawqpfy5"]
-
-[ext_resource type="Shader" path="res://maingame/shaders/solid_color.gdshader" id="1_jgw0f"]
-
-[resource]
-shader = ExtResource("1_jgw0f")
-shader_parameter/shader_color = Color(0, 0.31, 0.165333, 1)

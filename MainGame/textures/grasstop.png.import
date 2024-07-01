@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lsdedqgs3f8v"
-path="res://.godot/imported/tee.svg-b9d5e4fbf5b2e4f3513e417a6704c05e.ctex"
+uid="uid://bso7jxva8q1dq"
+path="res://.godot/imported/grasstop.png-b5589ba3ecd3b6149ccc8c2d28eba6bc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://maingame/textures/sprites/tee.svg"
-dest_files=["res://.godot/imported/tee.svg-b9d5e4fbf5b2e4f3513e417a6704c05e.ctex"]
+source_file="res://maingame/textures/grasstop.png"
+dest_files=["res://.godot/imported/grasstop.png-b5589ba3ecd3b6149ccc8c2d28eba6bc.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

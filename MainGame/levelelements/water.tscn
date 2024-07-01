@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://we5ds6yjcuys"]
+
+[ext_resource type="Script" path="res://maingame/levelelements/water.gd" id="1_3micx"]
+[ext_resource type="Material" uid="uid://b7mpl1qe7w6pj" path="res://maingame/materials/water.tres" id="2_x4wme"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_es4kl"]
+noise_type = 2
+frequency = 0.03
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fiojs"]
+width = 1120
+height = 300
+seamless = true
+noise = SubResource("FastNoiseLite_es4kl")
+
+[node name="WaterElement" type="Node2D"]
+script = ExtResource("1_3micx")
+metadata/_edit_lock_ = true
+
+[node name="WaterTexture" type="TextureRect" parent="."]
+texture_repeat = 2
+material = ExtResource("2_x4wme")
+offset_top = 30.0
+offset_right = 1120.0
+offset_bottom = 330.0
+texture = SubResource("NoiseTexture2D_fiojs")
+expand_mode = 1
+stretch_mode = 1

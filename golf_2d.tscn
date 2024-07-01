@@ -8,16 +8,52 @@
 visible = false
 script = ExtResource("1_ma0ii")
 
-[node name="RenderStats" type="Label" parent="DebugHUD"]
-offset_left = 2200.0
-offset_top = 15.0
-offset_right = 2240.0
-offset_bottom = 38.0
+[node name="Stats" type="VBoxContainer" parent="DebugHUD"]
+offset_left = 2043.0
+offset_right = 2083.0
+offset_bottom = 50.0
+
+[node name="Render" type="Label" parent="DebugHUD/Stats"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 
-[node name="BallStats" type="Label" parent="DebugHUD"]
-offset_left = 2200.0
-offset_top = 64.0
-offset_right = 2240.0
-offset_bottom = 87.0
+[node name="Ball" type="Label" parent="DebugHUD/Stats"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="Shot" type="Label" parent="DebugHUD/Stats"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="SwingOverride" type="GridContainer" parent="DebugHUD"]
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 2
+
+[node name="AngleLabel" type="Label" parent="DebugHUD/SwingOverride"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Angle:"
+
+[node name="AngleText" type="TextEdit" parent="DebugHUD/SwingOverride"]
+custom_minimum_size = Vector2(150, 35)
+layout_mode = 2
+text = "45.0"
+
+[node name="PowerLabel" type="Label" parent="DebugHUD/SwingOverride"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Power:"
+
+[node name="PowerText" type="TextEdit" parent="DebugHUD/SwingOverride"]
+custom_minimum_size = Vector2(150, 35)
+layout_mode = 2
+text = "75.0"
+
+[node name="Button" type="Button" parent="DebugHUD/SwingOverride"]
+layout_mode = 2
+text = "Override"
+
+[node name="ResetButton" type="Button" parent="DebugHUD/SwingOverride"]
+layout_mode = 2
+text = "Reset Ball"

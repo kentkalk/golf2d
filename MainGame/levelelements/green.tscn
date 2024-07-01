@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0ecty7ent0dt"]
+
+[ext_resource type="Script" path="res://maingame/levelelements/line2d_fill_and_collide.gd" id="1_1mxmr"]
+
+[node name="GreenElement" type="Line2D"]
+width = 25.0
+default_color = Color(5.29438e-07, 0.747098, 0.387805, 1)
+script = ExtResource("1_1mxmr")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D"]
+color = Color(0.113725, 0.584314, 0.45098, 1)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]

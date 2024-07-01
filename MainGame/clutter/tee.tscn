@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://6tmook7uwwoy"]
+
+[ext_resource type="Texture2D" uid="uid://lsdedqgs3f8v" path="res://maingame/clutter/textures/tee.svg" id="1_ly0x8"]
+
+[node name="Tee" type="StaticBody2D"]
+scale = Vector2(0.25, 0.25)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("1_ly0x8")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(22.5, -93.9, 12.5, -65.6, 12.5, 37, 11.5, 92, 10, 92, 4.3, 110, -4.5, 110, -4.5, 107.4, -12.5, 85.4, -12.5, -58, -13.4, -58, -14.4, -71, -14.9, -71, -22.5, -91.3, -22.5, -110, 22.5, -110)

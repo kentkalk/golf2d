@@ -1,12 +1,16 @@
-[gd_scene load_steps=13 format=3 uid="uid://86xt68bdifyu"]
+[gd_scene load_steps=17 format=3 uid="uid://86xt68bdifyu"]
 
 [ext_resource type="Script" path="res://maingame/scripts/main_game.gd" id="1_knt53"]
-[ext_resource type="Material" uid="uid://bjdkpmapnsmew" path="res://maingame/materials/fairway_grass.tres" id="3_0mred"]
-[ext_resource type="Material" uid="uid://ct4r3ksogah26" path="res://maingame/materials/teebox_grass.tres" id="4_6fvap"]
-[ext_resource type="Script" path="res://maingame/scripts/Button.gd" id="4_wvr71"]
-[ext_resource type="Material" uid="uid://5x6qpawqpfy5" path="res://maingame/materials/green_grass.tres" id="5_5soj8"]
+[ext_resource type="Script" path="res://maingame/scripts/level.gd" id="2_8mvkd"]
+[ext_resource type="PackedScene" uid="uid://b33j2aiix5fiw" path="res://maingame/levelelements/fairway.tscn" id="3_2xd3u"]
+[ext_resource type="PackedScene" uid="uid://d3hliisdiamp0" path="res://maingame/levelelements/teebox.tscn" id="4_ateua"]
+[ext_resource type="PackedScene" uid="uid://c0ecty7ent0dt" path="res://maingame/levelelements/green.tscn" id="5_24qsp"]
 [ext_resource type="Script" path="res://maingame/scripts/ball.gd" id="6_2eyps"]
-[ext_resource type="Texture2D" uid="uid://lsdedqgs3f8v" path="res://maingame/textures/sprites/tee.svg" id="8_ai55v"]
+[ext_resource type="Script" path="res://maingame/scripts/player.gd" id="6_3jxow"]
+[ext_resource type="PackedScene" uid="uid://we5ds6yjcuys" path="res://maingame/levelelements/water.tscn" id="6_ejktw"]
+[ext_resource type="Script" path="res://maingame/scripts/controlgui.gd" id="7_wpv0i"]
+[ext_resource type="ButtonGroup" uid="uid://cbwl15fnxifbr" path="res://maingame/interface/buttongroup_club_selection.tres" id="8_ifp4u"]
+[ext_resource type="Texture2D" uid="uid://bpofv54736xqm" path="res://maingame/textures/tempgolfer.svg" id="9_cs8vk"]
 [ext_resource type="Script" path="res://maingame/scripts/ingamemenu.gd" id="10_rnssa"]
 
 [sub_resource type="Gradient" id="Gradient_7xp6g"]
@@ -34,101 +38,110 @@ script = ExtResource("1_knt53")
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.5, 0.5)
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 position = Vector2(0, 717)
 texture = SubResource("GradientTexture2D_f5i2j")
 region_enabled = true
 region_rect = Rect2(0, 0, 30720, 1440)
+metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
 position_smoothing_speed = 1.0
 
-[node name="Ground" type="Node2D" parent="."]
+[node name="Level" type="Node2D" parent="."]
+script = ExtResource("2_8mvkd")
+fairway_element = ExtResource("3_2xd3u")
+teebox_element = ExtResource("4_ateua")
+green_element = ExtResource("5_24qsp")
+water_element = ExtResource("6_ejktw")
 
-[node name="Fairway" type="StaticBody2D" parent="Ground"]
-material = ExtResource("3_0mred")
+[node name="Player" type="Node2D" parent="."]
+script = ExtResource("6_3jxow")
 
-[node name="Teebox" type="StaticBody2D" parent="Ground"]
-material = ExtResource("4_6fvap")
+[node name="Sprite" type="Sprite2D" parent="Player"]
+scale = Vector2(0.181829, 0.181829)
+texture = ExtResource("9_cs8vk")
+centered = false
 
-[node name="Water" type="StaticBody2D" parent="Ground"]
+[node name="Button" type="Button" parent="Player/Sprite"]
+modulate = Color(1, 1, 1, 0)
+offset_right = 704.0
+offset_bottom = 968.0
 
-[node name="Green" type="StaticBody2D" parent="Ground"]
-material = ExtResource("5_5soj8")
-
-[node name="Ball" type="RigidBody2D" parent="."]
+[node name="Ball" type="RigidBody2D" parent="Player"]
 z_index = 2
 position = Vector2(-1048, -514)
 mass = 0.04
 physics_material_override = SubResource("PhysicsMaterial_tqmda")
 gravity_scale = 0.9
-freeze_mode = 1
 continuous_cd = 1
 script = ExtResource("6_2eyps")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Ball"]
 shape = SubResource("CircleShape2D_ikxa8")
 
-[node name="Clutter" type="StaticBody2D" parent="."]
+[node name="ControlGUI" type="CanvasLayer" parent="."]
+script = ExtResource("7_wpv0i")
+club_selection_group = ExtResource("8_ifp4u")
 
-[node name="Tee" type="CollisionPolygon2D" parent="Clutter"]
+[node name="ClubSelection" type="HBoxContainer" parent="ControlGUI"]
 visible = false
-position = Vector2(-739, 359)
-scale = Vector2(0.25, 0.25)
-polygon = PackedVector2Array(22.5, -94, 20.3, -85, 19.2, -85, 12.5, -66, 12.5, 37, 11.5, 91, 10.3, 91, 4.2, 110, -4.5, 110, -4.5, 107, -12.5, 85.2, -12.5, -59, -13.4, -59, -14.4, -72, -15.3, -72, -18.3, -84, -19.2, -84, -22.5, -92.3, -22.5, -110, 22.5, -110)
-disabled = true
+offset_left = 368.0
+offset_top = 1336.0
+offset_right = 779.0
+offset_bottom = 1376.0
+theme_override_constants/separation = 20
 
-[node name="Sprite" type="Sprite2D" parent="Clutter/Tee"]
-z_index = -1
-texture = ExtResource("8_ai55v")
+[node name="DriverButton" type="Button" parent="ControlGUI/ClubSelection"]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("8_ifp4u")
+text = "Driver"
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="WoodButton" type="Button" parent="ControlGUI/ClubSelection"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("8_ifp4u")
+text = "Fairway Wood"
 
-[node name="Label" type="Label" parent="HUD"]
-offset_left = 382.0
-offset_top = 1334.0
-offset_right = 422.0
-offset_bottom = 1357.0
+[node name="IronButton" type="Button" parent="ControlGUI/ClubSelection"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("8_ifp4u")
+text = "Iron"
 
-[node name="Button" type="Button" parent="HUD"]
-offset_left = 36.0
-offset_top = 1262.0
-offset_right = 337.0
-offset_bottom = 1375.0
-text = "Swing"
-script = ExtResource("4_wvr71")
+[node name="WedgeButton" type="Button" parent="ControlGUI/ClubSelection"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("8_ifp4u")
+text = "Wedge"
 
-[node name="Angle" type="TextEdit" parent="HUD"]
-offset_left = 763.0
-offset_top = 1264.0
-offset_right = 1012.0
-offset_bottom = 1305.0
-text = "45"
-
-[node name="Power" type="TextEdit" parent="HUD"]
-offset_left = 761.0
-offset_top = 1321.0
-offset_right = 1010.0
-offset_bottom = 1362.0
-text = "75"
+[node name="PutterButton" type="Button" parent="ControlGUI/ClubSelection"]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("8_ifp4u")
+text = "Putter"
 
 [node name="InGameMenu" type="CanvasLayer" parent="."]
 process_mode = 2
 visible = false
 script = ExtResource("10_rnssa")
 
-[node name="ResumeButton" type="Button" parent="InGameMenu"]
-offset_left = 1093.0
-offset_top = 531.0
-offset_right = 1461.0
-offset_bottom = 670.0
+[node name="Options" type="VBoxContainer" parent="InGameMenu"]
+offset_left = 1272.0
+offset_top = 608.0
+offset_right = 1392.0
+offset_bottom = 685.0
+theme_override_constants/separation = 15
+
+[node name="ResumeButton" type="Button" parent="InGameMenu/Options"]
+layout_mode = 2
 text = "Resume Game"
 
-[node name="ExitButton" type="Button" parent="InGameMenu"]
-offset_left = 1090.0
-offset_top = 716.0
-offset_right = 1458.0
-offset_bottom = 855.0
+[node name="ExitButton" type="Button" parent="InGameMenu/Options"]
+layout_mode = 2
 text = "Exit Game"

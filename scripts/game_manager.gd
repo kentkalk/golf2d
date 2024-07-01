@@ -15,5 +15,5 @@ func _ready():
 	currentlevel.generate()
 	
 	# launch level
-	var maingame = preload("res://MainGame/main_game.tscn").instantiate()
+	var maingame = preload("res://maingame/main_game.tscn").instantiate()
 	get_tree().get_root().get_node("Golf2D").add_child(maingame)

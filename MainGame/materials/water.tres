@@ -4,4 +4,5 @@
 
 [resource]
 shader = ExtResource("1_opist")
-shader_parameter/shader_color = null
+shader_parameter/color = Color(0, 0.303501, 0.716217, 0.5)
+shader_parameter/speed = 0.2

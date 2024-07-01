@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://b33j2aiix5fiw"]
+
+[ext_resource type="Script" path="res://maingame/levelelements/line2d_fill_and_collide.gd" id="1_gr5j8"]
+[ext_resource type="Texture2D" uid="uid://bso7jxva8q1dq" path="res://maingame/textures/grasstop.png" id="1_rwjc2"]
+
+[node name="FairwayElement" type="Line2D"]
+z_index = 2
+texture_repeat = 2
+points = PackedVector2Array(0, 0, 384, 0)
+width = 25.0
+default_color = Color(1.93726e-06, 0.40353, 0.182743, 1)
+texture = ExtResource("1_rwjc2")
+texture_mode = 1
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("1_gr5j8")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D"]
+z_index = -1
+position = Vector2(0, 8)
+color = Color(0.113989, 0.585769, 0.449414, 1)
+polygon = PackedVector2Array(0, 0, 294, 0, 384, 0, 384, 192, 0, 192)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]

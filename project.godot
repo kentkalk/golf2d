@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+CustomUtils="*res://scripts/custom_utils.gd"
 LevelGenerator="*res://scripts/level_generator.gd"
 GameManager="*res://scripts/game_manager.gd"
 
